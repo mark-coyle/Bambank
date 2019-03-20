@@ -2,7 +2,6 @@ const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const firebase = require("firebase");
@@ -25,7 +24,6 @@ app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", require("express-ejs-extend"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cookieParser(process.env.SECRET_ID));
 app.use(
   session({
     secret: process.env.SECRET_ID,
