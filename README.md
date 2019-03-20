@@ -17,6 +17,7 @@ The web application was required to:
 The following assumptions were made
 
 - If a user doesn't have enough of a balance to cover a transaction, this transaction would be prevented.
+- The only way for a user to currently get funds, is if someone else transfers them Bambeuros.
 
 ## Running locally
 
@@ -58,6 +59,9 @@ The overall structure of this application could be improved vastly. For instance
 
 This should be refactored to make use of the strong support for middleware that express has. For instance, you could have an _authenticationValidator_ middleware that would handle the validation of login and register requests.
 All Firebase interactions could be abstracted out into a DAO type layer.
+
+For example:
+![Structure](structure.png)
 
 #### Sessions vs JWT
 
