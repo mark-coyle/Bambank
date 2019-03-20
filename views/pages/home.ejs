@@ -1,0 +1,107 @@
+<% extend('../main') %>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Account Overview</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= user['firstName']%> <%= user['lastName']%></h6>
+            <p class="card-text">Your current balance is <span style="color:red"><%= user['balance']%></span> Bambeuros</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Transaction Log</h5>
+            <% if(user['transactions']){%>
+              <% Object.keys(user['transactions']).forEach(function(value){ %>
+                <hr>
+                <div class="row">
+                  <div class="col-xs-4 col-lg-4">
+                    From: <%= user['transactions'][value]['from'] %>
+                  </div>
+                  <div class="col-xs-4 col-lg-4">
+                    To: <%= user['transactions'][value]['to'] %>
+                  </div>
+                  <div class="col-xs-4 col-lg-4">
+                    Amount: <%= user['transactions'][value]['amount'] %> Bambeuros
+                  </div>
+                </div>
+              <%})%>
+            <%}%>
+          </div>
+        </div>
+      </div>
+  </div>
+  <br>
+  <h4>Current Users</h4>
+  <% if (error != "") {%>
+    <div class="alert alert-danger alert-small alert-xs" id="flash">
+        <%= error %>
+    </div>
+  <% } %>
+  <br>
+  <div class="row">
+      <div class="col-xs-12 col-md-12">
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">Name</th>
+                  <th scope="col" class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% if(users){%>
+                    <% Object.keys(users).forEach(function(value){ %>
+                      <% if(uid !== value) { %>
+                        <tr>
+                          <td class="text-center"><%= users[value]['Name'] %></td>
+                          <td class="text-center">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                              Transfer Money
+                            </button>
+                          </td>
+                        </tr>
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Modal Header</h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="/transfer/<%=value%>" method="post">
+                                    <input type="text" name="amount" placeholder="Amount to be transfered" class="form-control" id="amount">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success" id="transferButton" disabled>Transfer</button>
+                                </form>
+                                  <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <%}%>
+                    <%})%>
+                  <%}%>
+              </tbody>
+            </table>
+        </div>
+  </div>
+</div>
+<script>
+  let amountElement = document.getElementById('amount');
+  let transferButton = document.getElementById('transferButton');
+  amountElement.addEventListener('change', function(){
+    if(amountElement.value === null || amountElement.value  === ""){
+      transferButton.disabled = true;
+    }else{
+      if(!isNaN(amountElement.value)){
+        transferButton.disabled = false;
+      }else{
+        alert('whoops');
+      }
+    }
+  });
+</script>
